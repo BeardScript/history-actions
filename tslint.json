@@ -1,0 +1,12 @@
+{
+  "extends": [],
+  "linterOptions": {
+    "eofline": true,
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts",
+      "coverage/lcov-report/*.js",
+      "public/"
+    ]
+  }
+}
