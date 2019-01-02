@@ -11,7 +11,7 @@ This lightweight package provides a simple and flexible pattern to define user a
 
 ## Define an Action
 
-'''typescript
+```typescript
 
 import { Action } from 'history-actions';
 import { MyTestState } from './MyTestState';
@@ -44,7 +44,7 @@ export class SetValue extends Action {
   }
 }
 
-'''
+```
 
 Let's look at the above code more in-depth:
 
@@ -52,14 +52,14 @@ Let's look at the above code more in-depth:
 
 Create a class with the name of the action you are defining and make sure it extends Action.
 
-'''typescript
+```typescript
 import { Action } from 'history-actions';
 
 export class MyAction extends Action {
 ...
 }
 
-'''
+```
 
 If you are using typescript, which is highly recommended, it will force the implementation of the abstract do() and undo() methods.
 
@@ -86,7 +86,7 @@ Now for the fun part.
 Once your Actions are defined you should use them, right? Otherwise they'll be sitting there bored, and feeling useless.
 Let's see them in action.
 
-'''typescript
+```typescript
 
 import { MyAction } from './Actions/MyAction'
 
@@ -95,4 +95,4 @@ historyManager.record(action);
 action.do()
 historyManager.save();
 
-'''
+```
