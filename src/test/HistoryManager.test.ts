@@ -11,15 +11,13 @@ describe( 'maxLogs: number', ()=> {
 });
 
 describe( 'recording a single action, undoing it and redoing it', ()=> {
-  let myTestState: MyTestState;
-
+  let myTestState: MyTestState = new MyTestState();
+  
   let newValue = "Action Done";
   let oldValue: string;
   let action: SetValue;
 
   it( 'should do the action', () => {
-    historyManager.clear();
-    myTestState = new MyTestState();
     action = new SetValue( myTestState, "testProperty", newValue );
     historyManager.record( action );
     oldValue = myTestState.testProperty;
@@ -55,7 +53,6 @@ describe( 'recording multiple actions, undoing them and redoing them', ()=> {
 
   it( 'should do the first action and record it', () => {
     let action1 = new SetValue( myTestState, "testProperty", newValue1 );
-    historyManager.clear();
     historyManager.record( action1 );
     action1.do();
     
