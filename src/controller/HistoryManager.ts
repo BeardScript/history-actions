@@ -9,6 +9,7 @@ class HistoryManager {
   private _undone:MutationLog[] = [];
   private _maxLogs: number = 20;
 
+  /** The max number of undo's allowed (default: 20)*/
   get maxLogs(): number {
     return this._maxLogs;
   }
@@ -17,25 +18,30 @@ class HistoryManager {
     this._maxLogs = value;
   }
   
+  /** Clear all mutation logs and reset */
   clear() {
     this._recording = new MutationLog();
     this._done = [];
     this._undone = [];
   }
 
+  /** Pushes an <Action> to the current <MutationLog> being recorded */
   record( action: Action ) {
     this.isRecording = true;
     this._recording.actions.push( action );
   }
 
+  /** Returns the current <MutationLog> being recorded. */
   getRecording(): MutationLog {
     return this._recording;
   }
 
+  /** Returns the last recorded <Action> in the current <MutationLog> being recorded. */
   getLastRecordedAction() : Action {
     return this._recording.actions[ this._recording.actions.length - 1 ]
   }
 
+  /** Saves the current <MutationLog> being recorded */
   save() {
     this.isRecording = false;
     this._undone = [];
@@ -47,6 +53,7 @@ class HistoryManager {
     this._recording = new MutationLog();
   }
 
+  /** Undo the last saved <MutationLog> */
   undo() {
     if( this._done.length === 0 ) return;
     // remove last log "done"
@@ -57,6 +64,7 @@ class HistoryManager {
     this._undone.push( log );
   }
 
+  /** Redo the last undone <MutationLog> */
   redo() {
     if( this._undone.length === 0 ) return;
     // remove last log "undone"

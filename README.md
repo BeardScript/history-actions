@@ -19,6 +19,8 @@ npm install history-actions --save
 
 ## Define an Action
 
+An <Action> defines the way a mutation is done and undone. For a better result, you should granulate your actions as much as possible. An Action should do one thing only.
+
 ```typescript
 
 import { Action } from 'history-actions';
@@ -108,6 +110,29 @@ Let's see them in action.
 import { historyManager } from 'history-actions';
 import { MyAction } from './Actions/MyAction';
 
+// Instantiate an <Action>
+const action = new MyAction();
+
+// Record it
+historyManager.record(action);
+
+// Run it
+action.do();
+
+// Save the <MutationLog> you are recording. 
+historyManager.save();
+
+```
+
+After calling *save()*, the next recorded action will be pushed into a new <MutationLog>.
+
+You can record multiple actions in a single <MutationLog>. That is where this pattern shines. You can record a series of actions and undo them all in one call.
+
+```typescript
+
+import { historyManager } from 'history-actions';
+import { MyAction } from './Actions/MyAction';
+
 // Instantiate one or more actions
 const action1 = new MyAction();
 const action2 = new MyAction();
@@ -120,7 +145,7 @@ historyManager.record(action2);
 action1.do();
 action2.do();
 
-// Save the mutation log you just recorded
+// Save the <MutationLog> you are recording. 
 historyManager.save();
 
 ```
@@ -131,13 +156,13 @@ historyManager.save();
 
 import { historyManager } from 'history-actions';
 
-// undo the last mutation log
+// Undo the last saved <MutationLog>
 historyManager.undo()
 
-// redo the last undone mutation log
+// Redo the last undone <MutationLog>
 historyManager.redo()
 
-// clear all mutation logs and reset
+// Clear all mutation logs and reset
 historyManager.clear()
 
 ```
@@ -148,11 +173,14 @@ historyManager.clear()
 
 import { historyManager } from 'history-actions';
 
-// Get the last recorded action in the current mutation log being recorded.
+// Returns the last recorded <Action> in the current <MutationLog> being recorded.
 historyManager.getLastRecordedAction();
 
-// Get an array with the actions within the mutation log being recorded.
+// Returns the current <MutationLog> being recorded.
 historyManager.getRecording();
+
+// The max number of undo's allowed (default: 20)
+historyManager.maxLogs = 25;
 
 ```
 
