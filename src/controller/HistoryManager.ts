@@ -2,20 +2,22 @@ import MutationLog from '../model/MutationLog';
 import Action from '../model/Action';
 
 class HistoryManager {
-  isRecording: boolean = false;
-
   private _recording:MutationLog = new MutationLog();
   private _done:MutationLog[] = [];
   private _undone:MutationLog[] = [];
   private _maxLogs: number = 20;
 
-  /** The max number of undo's allowed (default: 20)*/
+  /** The max number of undo's allowed (default: 20) */
   get maxLogs(): number {
     return this._maxLogs;
   }
-
   set maxLogs( value: number ) {
     this._maxLogs = value;
+  }
+
+  /** Returns true if an Action has been pushed to the current MutationLog */
+  isRecording(): boolean {
+    return this._recording.actions.length > 0;
   }
   
   /** Clear all mutation logs and reset */
@@ -27,7 +29,6 @@ class HistoryManager {
 
   /** Pushes an <Action> to the current <MutationLog> being recorded */
   record( action: Action ) {
-    this.isRecording = true;
     this._recording.actions.push( action );
   }
 
@@ -37,18 +38,19 @@ class HistoryManager {
   }
 
   /** Returns the last recorded <Action> in the current <MutationLog> being recorded. */
-  getLastRecordedAction() : Action {
+  getLastRecordedAction(): Action {
     return this._recording.actions[ this._recording.actions.length - 1 ]
   }
 
   /** Saves the current <MutationLog> being recorded */
   save() {
-    this.isRecording = false;
     this._undone = [];
     this._done.push( this._recording );
 
-    if( this._done.length > this._maxLogs )
+    if( this._done.length > this._maxLogs ){
       this._done.shift();
+      console.warn( "The last MutationLog was dropped. You are trying to push more mutation logs than allowed. Please fix your code, or set a higher 'historyManager.maxLogs'" );
+    }
 
     this._recording = new MutationLog();
   }

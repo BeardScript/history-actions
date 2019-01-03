@@ -1,6 +1,6 @@
 {
   "name": "history-actions",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Action manager framework with undo/redo",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,5 +17,13 @@
     "ts-jest": "^23.10.5",
     "tslib": "^1.9.3",
     "typescript": "^3.2.2"
-  }
+  },
+  "keywords": [
+    "history",
+    "actions",
+    "record",
+    "undo/redo",
+    "undo",
+    "redo"
+  ]
 }

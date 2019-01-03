@@ -1,7 +1,7 @@
 # history-actions
 Action manager framework with undo/redo.
 
-This lightweight package provides a simple and flexible pattern to define user actions that can be done and undone through the *historyManager*, while letting you keep track of instances within the state, no matter how complex they could be. You can record multiple actions within a single log and undo them all at once.
+This lightweight package provides a simple and flexible pattern to define user actions that can be done and undone through the *historyManager*, while letting you keep track of instances within your state, no matter how complex they could be. You can record multiple actions within a single log and undo them all at once.
 
 - Simple.
 - Lightweight.
@@ -179,8 +179,11 @@ historyManager.getLastRecordedAction();
 // Returns the current <MutationLog> being recorded.
 historyManager.getRecording();
 
-// The max number of undo's allowed (default: 20)
-historyManager.maxLogs = 25;
+// Set/Get the max number of undo's allowed (default: 20).
+historyManager.maxLogs = 20;
+
+// Returns true if an Action has been pushed to the current <MutationLog>.
+const isRecording: boolean = historyManager.isRecording();
 
 ```
 
