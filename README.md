@@ -84,7 +84,7 @@ Here is where you should define the mutation of whatever it is you are mutating.
 
 ### The *action.undo()* method
 
-Here is where you define the the mutation that reverses whatever whas done in the do() method.
+Here is where you define the the mutation that reverses whatever was done in the do() method.
 
 CAUTION: you shouldn't use this method in your code. use historyManager.undo() instead.
 
