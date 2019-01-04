@@ -19,7 +19,7 @@ npm install history-actions --save
 
 ## Define an Action
 
-An <Action> defines the way a mutation is done and undone. For a better result, you should granulate your actions as much as possible. An Action should do one thing only.
+An **Action** defines the way a mutation is done and undone. For a better result, you should granulate your actions as much as possible. An **Action** should do one thing only.
 
 ```typescript
 
@@ -96,7 +96,7 @@ CAUTION: you shouldn't use this method in your code. use historyManager.redo() i
 
 ## historyManager
 
-The *historyManager* gives you a simple interface to *record()* multiple actions within a *mutation log* that you can *save()* so that you can *undo()* it and *redo()* it.
+The **historyManager** gives you a simple interface to *record()* multiple actions within a *mutation log* that you can *save()* so that you can *undo()* it and *redo()* it.
 
 ### Example
 
@@ -124,9 +124,9 @@ historyManager.save();
 
 ```
 
-After calling *save()*, the next recorded action will be pushed into a new <MutationLog>.
+After calling *save()*, the next recorded action will be pushed into a new **MutationLog**.
 
-You can record multiple actions in a single <MutationLog>. That is where this pattern shines. You can record a series of actions and undo them all in one call.
+You can record multiple actions in a single **MutationLog**. That is where this pattern shines. You can record a series of actions and undo them all in one call.
 
 ```typescript
 
@@ -191,9 +191,9 @@ const isRecording: boolean = historyManager.isRecording();
 
 A *MutationLog* is a collection of actions that perform a task you want to undo, this is particularily useful to reutilize code. The *historyManager* saves mutation logs. 
 
-When you **historyManager.record( action )** you are basically adding the action to the current *MutationLog* being recorded.
+When you **historyManager.record( action )** you are basically adding the action to the current **MutationLog** being recorded.
 
-When you **historyManager.save()** you are closing the *MutationLog* being recorded, so that a new one can be created.
+When you **historyManager.save()** you are closing the **MutationLog** being recorded, so that a new one can be created.
 
 **Why not just undoing/redoing a single action?** 
 
