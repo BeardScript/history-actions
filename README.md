@@ -28,33 +28,29 @@ Here's an example of an **Action**:
 ```typescript
 
 import { Action } from 'history-actions';
-import { MyTestState } from './MyTestState';
+import { myTestState } from './MyTestState';
 
-export class SetValue extends Action {
-  private _state: MyTestState;
-  private _prop: string;
-  private _value: any;
-  private _undoValue: string;
+export class SetHeight extends Action {
+  private _value: numeric;
+  private _undoValue: numeric;
 
-  constructor( state: MyTestState, prop: string, value: any ) {
+  constructor( value: numeric ) {
     super();
-    this._state = state;
-    this._prop = prop;
     this._value = value;
-    this._undoValue = state[prop];
+    this._undoValue = myTestState.height;
   }
 
   do() {
-    this._state[this._prop] = this._value;
+    myTestState.height = this._value;
   }
   
   undo() {
-    this._state[this._prop] = this._undoValue;
+    myTestState.height = this._undoValue;
   }
   
   // OPTIONAL: by default is defined in the superclass as follows
   redo() {
-    this.do()
+    this.do();
   }
 }
 
