@@ -21,7 +21,7 @@ npm install history-actions --save
 
 An **Action** defines the way a mutation is done and undone. For a better result, you should granulate your actions as much as possible. An **Action** should do one thing only.
 
-You might be wondering, if it defines a mutation, why is it called **Action** and not **Mutation**? The answere is simple, an Action does not mutate the state of an object, it triggers the mutation within it. In OOP an object should mutate its own state, so even when you set a property from an Action, you should be triggering the setter on that properties definition. So it's fair to say that an **Action** is by all means a controller.
+You might be wondering, if it defines a mutation, why is it called **Action** and not **Mutation**? The answer is simple, an Action does not mutate the state of an object, it triggers the mutation within it. In OOP an object should mutate its own state, so even when you set a property from an **Action**, you should be triggering the setter on that property's definition. So it's fair to say that an **Action** is by all means a controller.
 
 Here's an example of an **Action**:
 
