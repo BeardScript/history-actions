@@ -31,10 +31,10 @@ import { Action } from 'history-actions';
 import { myTestState } from './MyTestState';
 
 export class SetHeight extends Action {
-  private _value: numeric;
-  private _undoValue: numeric;
+  private _value: number;
+  private _undoValue: number;
 
-  constructor( value: numeric ) {
+  constructor( value: number ) {
     super();
     this._value = value;
     this._undoValue = myTestState.height;
