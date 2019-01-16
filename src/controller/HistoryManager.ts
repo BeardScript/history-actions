@@ -1,10 +1,10 @@
-import MutationLog from '../model/MutationLog';
+import ChangeLog from '../model/ChangeLog';
 import Action from '../model/Action';
 
 class HistoryManager {
-  private _recording:MutationLog = new MutationLog();
-  private _done:MutationLog[] = [];
-  private _undone:MutationLog[] = [];
+  private _recording:ChangeLog = new ChangeLog();
+  private _done:ChangeLog[] = [];
+  private _undone:ChangeLog[] = [];
   private _maxLogs: number = 20;
 
   /** The max number of undo's allowed (default: 20) */
@@ -22,7 +22,7 @@ class HistoryManager {
   
   /** Clear all mutation logs and reset */
   clear() {
-    this._recording = new MutationLog();
+    this._recording = new ChangeLog();
     this._done = [];
     this._undone = [];
   }
@@ -33,7 +33,7 @@ class HistoryManager {
   }
 
   /** Returns the current <MutationLog> being recorded. */
-  getRecording(): MutationLog {
+  getRecording(): ChangeLog {
     return this._recording;
   }
 
@@ -52,14 +52,14 @@ class HistoryManager {
       console.warn( "The last MutationLog was dropped. You are trying to push more mutation logs than allowed. Please fix your code, or set a higher 'historyManager.maxLogs'" );
     }
 
-    this._recording = new MutationLog();
+    this._recording = new ChangeLog();
   }
 
   /** Undo the last saved <MutationLog> */
   undo() {
     if( this._done.length === 0 ) return;
     // remove last log "done"
-    let log: MutationLog = <MutationLog>this._done.pop();
+    let log: ChangeLog = <ChangeLog>this._done.pop();
     // execute log's actions undo's
     this.executeUndo( log );
     // add to undone
@@ -70,20 +70,20 @@ class HistoryManager {
   redo() {
     if( this._undone.length === 0 ) return;
     // remove last log "undone"
-    let log: MutationLog = <MutationLog>this._undone.pop();
+    let log: ChangeLog = <ChangeLog>this._undone.pop();
     // execute log's actions redo's
     this.executeRedo( log );
     // add to done
     this._done.push( log );
   }
 
-  private executeUndo( log:MutationLog ) {
+  private executeUndo( log:ChangeLog ) {
     for( let i = log.actions.length - 1; i >= 0; i-- ) {
       log.actions[i].undo();
     }
   }
 
-  private executeRedo( log:MutationLog ) {
+  private executeRedo( log:ChangeLog ) {
     for( let i in log.actions ) {
       log.actions[i].redo();
     }

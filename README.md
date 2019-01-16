@@ -1,7 +1,7 @@
 # history-actions
 Action manager framework with undo/redo.
 
-This lightweight package provides a simple and flexible pattern to define user actions that can be done and undone through the *historyManager*, while letting you keep track of instances within your state, no matter how complex they could be. You can record multiple actions within a single log and undo them all at once.
+This lightweight package provides a simple and flexible pattern to define user actions that can be done and undone through the **historyManager**, while letting you keep track of instances within your state, no matter how complex they could be. You can record multiple actions within a single **ChangeLog** and undo them all in one call.
 
 - Simple.
 - Lightweight.
@@ -21,7 +21,7 @@ npm install history-actions --save
 
 An **Action** defines the way a mutation is done and undone. For a better result, you should granulate your actions as much as possible. An **Action** should do one thing only.
 
-You might be wondering, if it defines a mutation, why is it called **Action** and not **Mutation**? The answer is simple, an Action does not mutate the state of an object, it triggers the mutation within it. In OOP an object should mutate its own state, so even when you set a property from an **Action**, you should be triggering the setter on that property's definition. So it's fair to say that an **Action** is by all means a controller.
+An **Action** should not mutate the state of an object, but trigger the mutation within it. In OOP an object should mutate its own state, so even when you set a property from an **Action**, you should be triggering the setter on that property's definition. So it's fair to say that an **Action** is by all means a controller.
 
 Here's an example of an **Action**:
 
@@ -72,31 +72,31 @@ export class MyAction extends Action {
 
 ```
 
-If you are using typescript, which is highly recommended, it will force the implementation of the abstract do() and undo() methods.
+If you are using typescript, which is highly recommended, it will force the implementation of the abstract **do()** and **undo()** methods.
 
 ### Properties and constructor
 
-These will vary depending on the action. You are free to provide whatever properties your class will need in order to, do() an action and undo() it and if necessary, to redo() it.
+These will vary depending on the **Action**. You are free to provide whatever properties your class will need in order to **do()**, **undo()** and if necessary, to **redo()** an **Action**.
 
 ### The *action.do()* method
 
-Here is where you should define the mutation of whatever it is you are mutating. Please try not to turn green, you'll look like puke.
+Here is where you should define how to mutate whatever it is you are mutating.
 
 ### The *action.undo()* method
 
-Here is where you define the the mutation that reverses whatever was done in the do() method.
+Here is where you define how to reverse whatever was done in the **do()** method.
 
-CAUTION: you shouldn't use this method in your code. use historyManager.undo() instead.
+CAUTION: you should never call this method. Use **historyManager.undo()** instead.
 
 ### The *action.redo()* method
 
-Normally you won't need to define this method, since by default it's defined to call do() but in case you need additional boilerplate to redo whatever was undone, you should define it.
+Normally you won't need to define this method, since by default it's defined to call **do()** but in case you need additional boilerplate to redo whatever was undone, you should define it.
 
-CAUTION: you shouldn't use this method in your code. use historyManager.redo() instead.
+CAUTION: you should never call this method. Use **historyManager.redo()** instead.
 
 ## historyManager
 
-The **historyManager** gives you a simple interface to *record()* multiple actions within a *mutation log* that you can *save()* so that you can *undo()* it and *redo()* it.
+The **historyManager** gives you a simple interface to **record()** multiple actions within a **ChangeLog** that you can **save()** in order to **undo()** it and **redo()** it.
 
 ### Example
 
@@ -117,16 +117,19 @@ const action = new MyAction();
 historyManager.record(action);
 
 // Run it
-action.do();
+action.do(); 
+// or action.asyncDo()
 
-// Save the <MutationLog> you are recording. 
+// Save the <ChangeLog> you are recording. 
 historyManager.save();
 
 ```
 
-After calling *save()*, the next recorded action will be pushed into a new **MutationLog**.
+After calling **save()**, the next recorded action will be pushed into a new **ChangeLog**.
 
-You can record multiple actions in a single **MutationLog**. That is where this pattern shines. You can record a series of actions and undo them all in one call.
+Alternatively to calling **action.do()** you can call **action.asyncDo()** which is simply an asynchronous wrapper that calls **do()**.
+
+You can record multiple actions in a single **ChangeLog**. That is where this pattern shines. You can record a series of actions and undo them all in one call.
 
 ```typescript
 
@@ -145,7 +148,7 @@ historyManager.record(action2);
 action1.do();
 action2.do();
 
-// Save the <MutationLog> you are recording. 
+// Save the <ChangeLog> you are recording. 
 historyManager.save();
 
 ```
@@ -156,13 +159,13 @@ historyManager.save();
 
 import { historyManager } from 'history-actions';
 
-// Undo the last saved <MutationLog>
+// Undo the last saved <ChangeLog>
 historyManager.undo()
 
-// Redo the last undone <MutationLog>
+// Redo the last undone <ChangeLog>
 historyManager.redo()
 
-// Clear all mutation logs and reset
+// Clear all change logs and reset
 historyManager.clear()
 
 ```
@@ -173,30 +176,30 @@ historyManager.clear()
 
 import { historyManager } from 'history-actions';
 
-// Returns the last recorded <Action> in the current <MutationLog> being recorded.
+// Returns the last recorded <Action> in the current <ChangeLog> being recorded.
 historyManager.getLastRecordedAction();
 
-// Returns the current <MutationLog> being recorded.
+// Returns the current <ChangeLog> being recorded.
 historyManager.getRecording();
 
 // Set/Get the max number of undo's allowed (default: 20).
 historyManager.maxLogs = 20;
 
-// Returns true if an Action has been pushed to the current <MutationLog>.
+// Returns true if an Action has been pushed to the current <ChangeLog>.
 const isRecording: boolean = historyManager.isRecording();
 
 ```
 
-### What is a *MutationLog*?
+### What is a *ChangeLog*?
 
-A *MutationLog* consists on one or more actions that trigger mutations within the state of your app. It's the perceived change for the user. That one thing they might want to undo.
+A *ChangeLog* consists on one or more actions that trigger mutations within the state of your app. It's a perceived change for the user which they might want to undo.
 
-The *historyManager* records mutation logs. 
+The **historyManager** records change logs. 
 
-When you **historyManager.record( action )** you are basically adding the action to the current **MutationLog** being recorded.
+When you **historyManager.record( action )** you are basically adding the action to the current **ChangeLog** being recorded.
 
-When you **historyManager.save()** you are closing the **MutationLog** being recorded, so that a new one can be created.
+When you **historyManager.save()** you are closing the **ChangeLog** being recorded, so that a new one can be created.
 
 **Why not just undoing/redoing a single action?** 
 
-Well, let's say you want to **Add( objectInstance )**. Then, you simply create an Action **AddObjectInstance** and call the **Add( objectInstance )** method inside. Let's also asume that you do the same for **Remove()**, and now you want to perform a **Switch()**. So... you could define a **SwitchObjectInstance** Action, or you could reutilize the **Add** and **Remove** you already have, and record them in a single mutation log. This is just a very simple example of how this pattern scales.
+Well, let's say you want to **Add( objectInstance )**. Then, you simply create an Action **AddObjectInstance** and call the **Add( objectInstance )** method inside. Let's also asume that you do the same for **Remove()**, and now you want to perform a **Switch()**. So... you could define a **SwitchObjectInstance** Action, or you could reutilize the **Add** and **Remove** you already have, and record them in a single change log. This is just a very simple example of how this pattern scales.

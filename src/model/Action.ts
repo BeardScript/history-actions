@@ -7,4 +7,8 @@ export default abstract class Action {
   redo(): any {
     this.do();
   }
+
+  async asyncDo() {
+    return this.do();
+  }
 }
