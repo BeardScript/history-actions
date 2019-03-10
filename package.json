@@ -1,12 +1,13 @@
 {
   "name": "history-actions",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Action manager framework with undo/redo",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "publish": "tsc; npm publish"
   },
   "author": "BeardScript",
   "license": "MIT",
